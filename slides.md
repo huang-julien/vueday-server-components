@@ -15,7 +15,9 @@ title: Welcome to Slidev
 mdc: true
 ---
 
-#  Introduction to Nuxt server components and Nuxt islands
+#  Nuxt server components and Nuxt islands
+
+## Current state and the future
 
 Julien Huang
 
@@ -32,11 +34,23 @@ layout: intro
   <div>
   <h1> Julien Huang</h1>
 
-  - Frontend developer @ Leetchi
-  - Nuxt Contributor and Nuxt Team
-  - Developer since 3 years
-  - Doing open-source since a year and a half
 
+<ul>
+
+  <li>
+  Frontend developer @ Leetchi in <twemoji-flag-france />
+  </li>
+  <li>
+Nuxt Contributor and Nuxt Team <logos-nuxt-icon  />
+  </li>
+  <li>
+Developer since 3 years  
+</li>
+  <li>
+Doing open-source since a year and a half  
+</li>
+</ul>
+  
   </div>
 
   <div class="flex flex-cols justify-center">
@@ -67,12 +81,19 @@ layout: intro
 
 # Nuxt <logos-nuxt-icon class="text-5xl" />
 
+- auto-import
+- eco-system of modules
+- one project for multiple providers
+- SSR - SSG - CSR
+- nitro server
+- file based routing
+
 <!--
-I think everyone knows what nuxt is here.
-Nuxt is a full-stack meta framework built upon Vue. It's main purpose is to server render your Vue application.
-Meaning that your components will be rendered server side AND client side. And there's a process for that called hydration.
+I think everyone knows what Nuxt is here since Daniel gave you an amazing talk this morning. 
 -->
 
+---
+layout: center
 ---
 
 # Server components ? <bxs-component text-green-400 />
@@ -123,7 +144,7 @@ It also implies that no JS chunk with be imported client-side since we don't nee
   </div>
   <div flex flex-col>
   <skill-icons-astro  mx-auto />
-  <p>Astro Islands</p>
+  <p>Astro</p>
   </div>
   <div flex flex-col >
   <skill-icons-nuxtjs-dark  mx-auto />
@@ -135,31 +156,8 @@ It also implies that no JS chunk with be imported client-side since we don't nee
 <!--
 
 React introduced two years ago with react ... 18 and next JS the react server components? On their side, they are using an ast to describe what has to be rendered
-On astro side, it's a bit particular, everything is static by default and then you declare which component is interactive.
-And on our side, we've got the nuxt island which has been release in 3.2 and it keep gettingmore feature update after update.
-
--->
-
----
-
-# Advantages
-
-<!--
-
-- no client bundle
-- safe server code within the component
-
--->
-
----
-
-# Drawbacks
-
-<!--
-
-- well... it's server only
-- delayed updated
-- complexity
+On astro side, it's a bit particular, everything is static by default so everything is server component and then you declare which component is loaded client side.
+And on our side, we've got the nuxt island.
 
 -->
 
@@ -206,10 +204,56 @@ interface NuxtIslandResponse {
 Nuxt provide an endpoint which starts by  `/__nuxt_island/`. This endpoint is responsible for returning an `NuxtIslandResponse`
 Then you have the `NuxtIsland` component which will make calls to this endpoint and render the response into static HTML
 
-Since we retrieve a server component thorugh an endpointan Island component a isolated from your application even in SSR. 
-This means that the component has it's own vueApp and nuxtApp context. 
+Since we retrieve an island component thorugh an endpoint, your component will be isolated from your application even in SSR. 
+This means that your application and your component does not share the same Vue and nuxt context
 
 -->
+
+
+---
+layout: center
+---
+
+# Advantages
+
+<v-clicks>
+
+- no javascript imported client side
+- components are cached
+- safely write server code within your component
+- access server environement
+
+</v-clicks>
+
+<!--
+
+- no client bundle
+- safe server code within the component
+
+-->
+
+---
+layout: center
+---
+
+# Drawbacks
+
+<v-clicks>
+
+- not interactive
+- takes time to update
+
+</v-clicks>
+
+<!--
+
+- well... it's server only
+- delayed updated
+- complexity
+
+-->
+
+
 
 ---
 
@@ -372,10 +416,10 @@ pre {
 ```
 
 <!--
-Soem of you may think that it's just like any vue component.
-But if you look carefully at line 6-7, there's a line commented with call to db. Let's admit you're using an ORM and that
-`Articles.getByid` is a call to a database. This is something that won't work on a normal component because it will also be ran client-side.
-The workaround would be to have an endpoint exposed to retrieve an article.
+
+So this is an exemple of an island component. It's basically like any vue component, except that all this code will be ran only server side.
+if you look at the privateKey, this is something that wouldn't work on a universal component because privateKey would be undefined client side.
+
 -->
 
 ---
@@ -476,7 +520,6 @@ layout: center
 
 Slots !
 
-This was something that was not possible on the initial implementation of Nuxtislands.
 You can now pass down slots from your client component to an island. BTW Since a slot is rendered by the parent component and if
 the parent component is interactive you're slot will also be interactive within the server component
 
@@ -494,6 +537,8 @@ We also cache the response of an island component. This means that if you alread
 NuxtIsland won't call the server but rather load what has been cached.
 
 -->
+
+
 ---
 layout: center
 ---
@@ -533,9 +578,24 @@ Something that was released in 3.7
 You are now able to get your component from a remote server. It can be a Nuxt Server or either any other CMS.
 The only condition is that the response has to be a NuxtIslandResponse.
 
-This was pretty much everything you can do with islands for now. But there's also one new feature that is coming in 3.8 or 3.9
 
 -->
+
+---
+layout: center
+---
+
+# Roadmap
+
+nuxt/nuxt#19772
+
+<!--
+
+
+This was pretty much everything you can do with islands for now. We do have a roadmap available on github
+
+-->
+
 
 ---
 layout: center
@@ -544,12 +604,10 @@ layout: center
 
 <!--
 
-Which is the ability to declare component called within server as client.
-
+first selective client component within server components is coming in a future minor or patch release.
 For those who are familiar with Astro, you can compare this feature to the 
 `client:load` attribute to make a component imported client-side.
 
-Why is it necessary in some cases ?
 
 -->
 
@@ -586,22 +644,15 @@ const products = await Products.getAll()
 
 <!--
 
-Well nothing's better than a small example. 
-If you look at this island component, let's admit this is a list of product and that you wish to have a NuxtLink within your last column
-
-The current behavior is that this will be static. And if you click on the anchor tag client-side, this will navigate you to the page but with a hard
-navigation meaning you'll have to completly reload the app once again.
+for exemple
+Currently clicking on the link rendered by this server component will make your client do a native navigation. Not handled by the router, it means that you'll reload completly your application.
 
 If you wish to make NuxtLink instantiated client-side, you can use the `nuxt-client` prop/attribute to declare it as interactive.
 So once client-side, NuxtIsland will also import the component's JS chunk
 
 -->
 
----
-layout: center
----
 
-# Roadmap
 
 ---
 layout: center
@@ -643,8 +694,6 @@ layout: center
 <!--
 We also have something called <ServerOnly> component on the roadmap.
 This component will give you the ability to make parts of your universal component server only.
-Daniel began something on one of his livestream but i'm not sure what's the current state of it. But it looked quite amazing.
-The example here is that everything wrapped within server only such as theShowMeMarkdowngeneratedArtcile will be only rendered server side
 -->
 
 ---
@@ -663,14 +712,24 @@ The reason this hasn't been made on the current PR is because i wish to have som
 -->
 
 ---
+layout: center
+---
 
-# To wrap up
+<ul>
+<li>
+ <mdi-github /> @huang-julien
+</li>
+<li> 
+  <ic-baseline-discord /> @chakraecho or Julien Huang on the Nuxt discord
+</li>
+<li> 
+  <mdi-twitter /> @JulienHuang_dev
+</li>
+</ul>
+
 
 <!--
 
 to wrap up, island and server component are not enabled by default. This is not something planned since it would bring too much complexity. 
-Islands are here to avoid loading a bunch of javascript for components that are heavy and not interactive.
-Now that you know what's a server and island component on nuxt
-i guess that the next talk will be a demo...
 
 -->
