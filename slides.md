@@ -219,7 +219,7 @@ layout: center
 <v-clicks>
 
 - no javascript imported client side
-- components are cached
+- Island responses are cached
 - safely write server code within your component
 - access server environement
 
